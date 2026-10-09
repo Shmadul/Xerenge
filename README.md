@@ -7,6 +7,8 @@ no CPU interpreter and no JIT.
 
 ## Getting it running
 
+**On an iPhone or iPad:** see [`rexglue/ios/README.md`](rexglue/ios/README.md).
+
 You need a dump of the retail European release - the image hashing to
 `34c1bd4d549c2c53f29d814fa5e5d1c04c533c5ca0c39e57b6c2538f44ff59b4` - and a
 machine with Vulkan.

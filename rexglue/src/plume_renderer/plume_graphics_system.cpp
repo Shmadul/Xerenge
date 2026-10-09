@@ -255,6 +255,8 @@ bool PlumeGraphicsSystem::InitializePlumeDevice() {
   // backend builds its instance itself and never did it, so there was no
   // overlay and F12 captured nothing. The library is only present where
   // RenderDoc is installed, so elsewhere this does nothing.
+  // RenderDoc's app API has no Apple support (the SDK stubs it out there).
+#if !defined(__APPLE__)
   if (!renderdoc_api_) {
     renderdoc_api_ = rex::ui::RenderDocAPI::CreateIfConnected();
     if (renderdoc_api_ && renderdoc_api_->api_1_0_0()) {
@@ -266,9 +268,18 @@ bool PlumeGraphicsSystem::InitializePlumeDevice() {
       REXLOG_INFO("plume: RenderDoc loaded - F12 captures to {}/", capture_dir);
     }
   }
+#endif
 
 #if defined(__ANDROID__)
   UseAndroidCustomVulkanDriver();
+#endif
+#if defined(__APPLE__)
+  // volk looks only for system-wide names; the window's SDL has already loaded
+  // the loader (macOS) or MoltenVK (iOS) shipped beside the executable.
+  if (auto get_instance_proc_addr =
+          reinterpret_cast<PFN_vkGetInstanceProcAddr>(SDL_Vulkan_GetVkGetInstanceProcAddr())) {
+    plume::SetVulkanGetInstanceProcAddr(get_instance_proc_addr);
+  }
 #endif
   render_interface_ = std::make_unique<plume::VulkanInterface>();
   if (!render_interface_ || !render_interface_->isValid()) {
@@ -1700,6 +1711,7 @@ void PlumeGraphicsSystem::PresentGuestFrame(uint32_t width, uint32_t height) {
   // A RenderDoc capture of chosen frames, without anyone at the keyboard:
   // XERENGE_CAPTURE_FRAME=<n>[,<n>...] asks RenderDoc for the next frame once
   // this many have been presented.
+#if !defined(__APPLE__)
   if (renderdoc_api_ && renderdoc_api_->api_1_0_0()) {
     static const std::vector<uint64_t> wanted = [] {
       std::vector<uint64_t> frames;
@@ -1767,6 +1779,7 @@ void PlumeGraphicsSystem::PresentGuestFrame(uint32_t width, uint32_t height) {
       }
     }
   }
+#endif
 
   // VdSwap calls this on a guest thread, so waiting for the UI thread to
   // finish drawing spends the title's own time: measured at 12 ms a frame.

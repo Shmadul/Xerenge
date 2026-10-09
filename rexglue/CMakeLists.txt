@@ -32,6 +32,12 @@ elseif(ANDROID)
     # SDLActivity loads the game as libmain.so and calls its SDL_main.
     add_library(burnout SHARED ${BURNOUT_SOURCES} src/android_touch.cpp)
     set_target_properties(burnout PROPERTIES OUTPUT_NAME main)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    # Packed into Burnout.app by scripts/package-ios.sh.
+    enable_language(OBJCXX)
+    add_executable(burnout ${BURNOUT_SOURCES} src/ios_launch.mm src/ios_touch.mm)
+    set_source_files_properties(src/ios_launch.mm src/ios_touch.mm PROPERTIES COMPILE_OPTIONS -fobjc-arc)
+    target_link_libraries(burnout PRIVATE "-framework UIKit" "-framework QuartzCore")
 else()
     add_executable(burnout ${BURNOUT_SOURCES})
 endif()
@@ -173,6 +179,24 @@ if(XERENGE_SHADER_CACHE_BOOTSTRAP_CPP)
 endif()
 
 add_library(rexgpu-plume SHARED ${REXGPU_PLUME_SOURCES})
+# The optional caches are weak references that read as null when absent. ELF
+# leaves those unresolved by itself; Mach-O's linker must be told, per symbol.
+if(APPLE)
+    set(_xerenge_optional_caches)
+    if(NOT XERENGE_SHADER_CACHE_EXTRA_CPP)
+        list(APPEND _xerenge_optional_caches Extra)
+    endif()
+    if(NOT XERENGE_SHADER_CACHE_BOOTSTRAP_CPP)
+        list(APPEND _xerenge_optional_caches Bootstrap)
+    endif()
+    foreach(_cache IN LISTS _xerenge_optional_caches)
+        foreach(_symbol g_shaderCacheEntries g_shaderCacheEntryCount g_compressedSpirvCache
+                        g_spirvCacheCompressedSize g_spirvCacheDecompressedSize
+                        g_shaderMicrocodeEntries g_shaderMicrocodeEntryCount)
+            target_link_options(rexgpu-plume PRIVATE "LINKER:-U,_${_symbol}${_cache}")
+        endforeach()
+    endforeach()
+endif()
 set_target_properties(rexgpu-plume PROPERTIES
     CXX_VISIBILITY_PRESET hidden
     VISIBILITY_INLINES_HIDDEN ON

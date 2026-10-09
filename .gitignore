@@ -36,6 +36,11 @@ rexglue/generated/
 rexglue/build/
 rexglue/build-arm64/
 rexglue/build-android/
+rexglue/build-ios/
+# Your Apple account, certificate and phone (see rexglue/ios/signing.local.example),
+# and what Xcode builds from the signing stub.
+rexglue/ios/signing.local
+rexglue/ios/signing-stub/build/
 
 # Run logs and captures of the ReXGlue project
 rexglue/logs/

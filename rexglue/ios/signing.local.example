@@ -1,0 +1,12 @@
+# Copy to signing.local (git-ignored) and fill in. Read by scripts/package-ios.sh.
+# Make the provisioning profile first: build rexglue/ios/signing-stub with Xcode
+# and the same bundle identifier and team (see rexglue/ios/README.md).
+
+# A bundle identifier of your own.
+XERENGE_IOS_BUNDLE_ID=com.example.burnoutrevenge
+# Your team ID: the OU of your Apple Development certificate.
+XERENGE_IOS_TEAM=XXXXXXXXXX
+# The certificate's SHA-1, from `security find-identity -v -p codesigning`.
+XERENGE_IOS_IDENTITY=0000000000000000000000000000000000000000
+# The phone, from `xcrun devicectl list devices` (Identifier column).
+XERENGE_IOS_DEVICE=00000000-0000-0000-0000-000000000000

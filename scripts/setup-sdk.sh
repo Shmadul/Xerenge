@@ -10,16 +10,18 @@ root=$(cd "$(dirname "$0")/.." && pwd)
 . "$root/scripts/platform.sh"
 sdk="$root/rexglue-sdk"
 # HTTPS, so that no SSH key is needed to fetch it.
-fork=${XERENGE_SDK_REMOTE:-https://github.com/shipa-2/rexglue-xerenge.git}
+# The iOS port's branch of it (shipa-2/rexglue-xerenge plus the iOS target).
+fork=${XERENGE_SDK_REMOTE:-https://github.com/Shmadul/rexglue-xerenge.git}
+branch=${XERENGE_SDK_BRANCH:-ios-port}
 
 if [ ! -d "$sdk/.git" ]; then
     echo "== fetching the SDK into $sdk"
-    git clone "$fork" "$sdk"
+    git clone --branch "$branch" "$fork" "$sdk"
     git -C "$sdk" remote add upstream https://github.com/rexglue/rexglue-sdk 2>/dev/null || true
 else
     echo "== the SDK is already there: $sdk; updating"
     git -C "$sdk" fetch origin
-    git -C "$sdk" reset --hard origin/HEAD
+    git -C "$sdk" reset --hard "origin/$branch"
 fi
 
 echo "== submodules"

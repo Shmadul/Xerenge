@@ -13,16 +13,18 @@ root=$(cd "$(dirname "$0")/.." && pwd)
 . "$root/scripts/platform.sh"
 plume="$root/plume"
 xenos="$root/XenosRecomp"
-plume_remote=${XERENGE_PLUME_REMOTE:-https://github.com/shipa-2/plume.git}
+# plume: the iOS port's branch of shipa-2's fork (SDL makes the surface on Apple).
+plume_remote=${XERENGE_PLUME_REMOTE:-https://github.com/Shmadul/plume-xerenge.git}
+plume_branch=${XERENGE_PLUME_BRANCH:-ios-port}
 xenos_remote=${XERENGE_XENOSRECOMP_REMOTE:-https://github.com/shipa-2/XenosRecomp-xerenge.git}
 
 if [ ! -d "$plume/.git" ]; then
     echo "== fetching plume into $plume"
-    git clone --depth 1 "$plume_remote" "$plume"
+    git clone --depth 1 --branch "$plume_branch" "$plume_remote" "$plume"
 else
     echo "== plume is already there: $plume; updating"
-    git -C "$plume" fetch --depth 1 origin
-    git -C "$plume" reset --hard origin/HEAD
+    git -C "$plume" fetch --depth 1 origin "$plume_branch"
+    git -C "$plume" reset --hard FETCH_HEAD
 fi
 echo "== plume submodules"
 retry git -C "$plume" submodule update --init --recursive --depth 1

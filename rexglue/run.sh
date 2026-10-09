@@ -102,6 +102,14 @@ mkdir -p logs
 # executable's name and how the runtime libraries are found.
 case "$(uname -s)" in
     MINGW*|MSYS*|CYGWIN*) PRESET=win-amd64; EXE=.exe; WINDOWS=1 ;;
+    Darwin)
+        # The title's own build writes the SDK's runtime to out/<platform>/
+        # (the SDK's standalone multi-config build adds a Release/ beneath it).
+        case "$(uname -m)" in
+            arm64) PRESET=mac-arm64 ;;
+            *)     PRESET=mac-amd64 ;;
+        esac
+        EXE=; MACOS=1 ;;
     *) PRESET=linux-amd64; EXE= ;;
 esac
 
@@ -213,6 +221,8 @@ fi
 if [ -n "$WINDOWS" ]; then
     # The libraries built with the game first, then the SDK's.
     export PATH="$(pwd)/build:$SDK_LIB:$PATH"
+elif [ -n "$MACOS" ]; then
+    export DYLD_LIBRARY_PATH="$SDK_LIB${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}"
 else
     export SDL_VIDEODRIVER=x11
     export LD_LIBRARY_PATH="$SDK_LIB${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"

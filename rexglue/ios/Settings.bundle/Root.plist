@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>FooterText</key>
+			<string>Lower resolutions run faster and keep the phone cooler. Changes take effect the next time the game starts.</string>
+			<key>Title</key>
+			<string>Display</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>1600x900</string>
+			<key>Key</key>
+			<string>render_resolution</string>
+			<key>Title</key>
+			<string>Resolution</string>
+			<key>Titles</key>
+			<array>
+				<string>Native (screen size)</string>
+				<string>1080p</string>
+				<string>900p (recommended)</string>
+				<string>720p (as on Xbox 360)</string>
+				<string>540p</string>
+			</array>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Values</key>
+			<array>
+				<string>native</string>
+				<string>1920x1080</string>
+				<string>1600x900</string>
+				<string>1280x720</string>
+				<string>960x540</string>
+			</array>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<true/>
+			<key>Key</key>
+			<string>fill_screen</string>
+			<key>Title</key>
+			<string>Fill Screen</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>fps_counter</string>
+			<key>Title</key>
+			<string>Show FPS</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Effects</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>bloom</string>
+			<key>Title</key>
+			<string>Bloom</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>motion_blur</string>
+			<key>Title</key>
+			<string>Motion Blur</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Culling skips cars and scenery that are off screen, which can help in heavy traffic.</string>
+			<key>Title</key>
+			<string>Performance</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>culling</string>
+			<key>Title</key>
+			<string>Culling</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>The on-screen controls hide by themselves while a controller is connected.</string>
+			<key>Title</key>
+			<string>Controls</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<true/>
+			<key>Key</key>
+			<string>touch_controls</string>
+			<key>Title</key>
+			<string>Touch Controls</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+	</array>
+</dict>
+</plist>
