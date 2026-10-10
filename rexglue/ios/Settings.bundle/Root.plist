@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>FooterText</key>
-			<string>Lower resolutions run faster and keep the phone cooler. Changes take effect the next time the game starts.</string>
+			<string>Stretch fills the screen with the games own 16:9 picture, slightly wide. Widescreen shows more of the road undistorted, but the games overlays (crash bars, flashes, videos) cover only the middle. Lower resolutions run faster and keep the phone cooler. Changes take effect the next time the game starts.</string>
 			<key>Title</key>
 			<string>Display</string>
 			<key>Type</key>
@@ -40,13 +40,25 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<true/>
+			<string>stretch</string>
 			<key>Key</key>
-			<string>fill_screen</string>
+			<string>screen_mode</string>
 			<key>Title</key>
-			<string>Fill Screen</string>
+			<string>Screen</string>
+			<key>Titles</key>
+			<array>
+				<string>Stretch to fill</string>
+				<string>Widescreen</string>
+				<string>16:9 with bars</string>
+			</array>
 			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
+			<string>PSMultiValueSpecifier</string>
+			<key>Values</key>
+			<array>
+				<string>stretch</string>
+				<string>widescreen</string>
+				<string>16:9</string>
+			</array>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>

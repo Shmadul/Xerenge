@@ -62,9 +62,12 @@ committed.
 ## On the phone
 
 * **Settings → Apps → Burnout Revenge**: resolution (900p by default; native
-  costs about twice the GPU work), fill screen (the cameras are widened to the
-  phone's shape; off keeps 16:9 with bars), culling, bloom, motion blur, the
-  FPS counter and the touch controls. Read at every start.
+  costs about twice the GPU work), screen (stretch by default: the console's
+  16:9 picture scaled onto the whole screen, so the game's full-screen overlays
+  - the crash letterbox and flash, the videos - cover it; widescreen widens the
+  cameras to the phone's shape undistorted but keeps those overlays in a 16:9
+  box; or 16:9 with bars), culling, bloom, motion blur, the FPS counter and the
+  touch controls. Read at every start.
 * **Touch controls**: a floating stick on the left half; RT and LT bottom
   right, A B X Y above them; LB and RB in the top corners, Back and Start top
   middle. They hide while a controller is connected.
@@ -79,8 +82,8 @@ committed.
   sandbox, the renderer's switches, the Settings page.
 * `src/ios_touch.mm`: the on-screen controls, an SDL virtual gamepad.
 * In the SDK: UIKit as SDL's video driver, `main` handed to `SDL_RunApp`, no
-  Vulkan loader (MoltenVK is loaded from `Frameworks/`), guest memory backed by
-  a temporary file where the sandbox refuses POSIX shared memory, and FFmpeg's
+  Vulkan loader (MoltenVK is loaded from `Frameworks/`), guest memory in a Mach memory entry
+  (RAM only; the sandbox refuses POSIX shared memory), and FFmpeg's
   ARM Apple configuration carrying the soundtrack's WMA and MP3 decoders.
 * In plume: SDL makes the Metal-layer surface on Apple platforms, and the
   native Metal backend is left out.

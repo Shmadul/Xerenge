@@ -112,6 +112,16 @@ bool FixedAspect() {
   return fixed;
 }
 
+// XERENGE_STRETCH: the console's 16:9 frame scaled onto the whole window. On a
+// screen of another shape everything is a little wide or tall, but the picture
+// is the title's own - its full-screen overlays (a crash's letterbox and white
+// flash, the videos) cover the screen, which the widened scene's 16:9
+// interface box cannot.
+bool Stretched() {
+  static const bool stretched = std::getenv("XERENGE_STRETCH") != nullptr && !FixedAspect();
+  return stretched;
+}
+
 // The largest 16:9 rectangle inside the window, centred.
 plume::RenderRect AspectRect(uint32_t window_width, uint32_t window_height) {
   uint32_t width = std::min(window_width, window_height * 16 / 9);
@@ -133,11 +143,19 @@ void FrameSize(uint32_t window_width, uint32_t window_height, uint32_t* width,
   uint32_t requested_width = 0;
   uint32_t requested_height = 0;
   RequestedRenderResolution(&requested_width, &requested_height);
-  if (FixedAspect() && requested_width == 0) {
+  if ((FixedAspect() || Stretched()) && requested_width == 0) {
     // "The device's" resolution, kept 16:9: as much of the screen as that shape fills.
     const plume::RenderRect fit = AspectRect(window_width, window_height);
     requested_width = uint32_t(fit.right - fit.left);
     requested_height = uint32_t(fit.bottom - fit.top);
+  }
+  if (Stretched() && requested_width != 0) {
+    // The size asked for, as the console's shape: scaled onto the window as it is.
+    requested_width = uint32_t(uint64_t(requested_height) * 16 / 9) & ~1u;
+    *scaled = scene_wanted;
+    *width = *scaled ? requested_width : window_width;
+    *height = *scaled ? requested_height : window_height;
+    return;
   }
   // A screen wider than 16:9, not kept at 16:9: the frame takes the screen's
   // shape at the height asked for - widescreen.cpp widens the cameras to it

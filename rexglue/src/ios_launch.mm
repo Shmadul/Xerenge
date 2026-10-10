@@ -7,7 +7,7 @@
 //   Documents/burnout.log    the log, readable from Finder's Files tab
 //   Documents/xerenge.conf   optional, for testing: overrides the app's page in
 //                            the Settings app (render_resolution = WxH or
-//                            native, fill_screen, touch_controls, culling,
+//                            native, screen_mode, touch_controls, culling,
 //                            bloom, motion_blur, fps_counter), and env.NAME =
 //                            value lines for any variable the game or the
 //                            renderer reads
@@ -85,11 +85,18 @@ extern "C" void RexIOSPrepareLaunch(std::vector<std::string>* args) {
                            "XERENGE_REAL_SHADERS", "XERENGE_D3D_DRAWS", "XERENGE_SECONDARY_TICKS"}) {
     setenv(name, "1", 1);
   }
-  // A phone is wider than 16:9. Filling it widens the game's cameras to the
-  // screen's shape (widescreen.cpp) and keeps the interface in a 16:9 box;
-  // fill_screen = false keeps the console's shape between black bars.
-  if (value("fill_screen") == "false") {
+  // A phone is wider than 16:9. screen_mode:
+  //   stretch     the console's 16:9 frame scaled onto the whole screen - a
+  //               little wide, but every overlay (the crash letterbox and flash,
+  //               the videos) covers the screen
+  //   widescreen  the cameras widened to the screen's shape (widescreen.cpp),
+  //               undistorted, with the interface and its overlays in a 16:9 box
+  //   16:9        the console's shape between black bars
+  const std::string screen = value("screen_mode");
+  if (screen == "16:9") {
     setenv("XERENGE_ASPECT_16_9", "1", 1);
+  } else if (screen != "widescreen") {
+    setenv("XERENGE_STRETCH", "1", 1);
   }
   if (value("fps_counter") == "true") {
     setenv("XERENGE_FPS_SHOW", "1", 1);
